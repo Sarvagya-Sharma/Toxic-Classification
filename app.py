@@ -4,17 +4,30 @@ import numpy as np
 import re
 import string
 
+import nltk  
+
+@st.cache_resource
+def download_nltk_data():
+    nltk.download('stopwords')
+    
+download_nltk_data() 
+
+
 @st.cache_resource
 def load_artifacts():
+
     with open('rf_model.pkl', 'rb') as f:
         model = pickle.load(f)
+    
     with open('vectorizer.pkl', 'rb') as f:
         vectorizer = pickle.load(f)
+
     embedding_matrix = np.load('embedding_matrix.npy')
     
     return model, vectorizer, embedding_matrix
 
 model, vectorizer, embedding_matrix = load_artifacts()
+
 
 def preprocess_text(sen):
   sen = sen.lower()
